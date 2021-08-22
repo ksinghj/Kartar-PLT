@@ -1,6 +1,18 @@
+@import '../variables.scss';
+
+// Make App the size of an iPhone X,
+// as I was told to use React rather than React Native
 .App {
-    margin: auto;
-    width: 375px;
-    height: 800px;
+    margin: 3em auto;
+    width: $containerWidth;
+    height: $containerHeight;
     border: 1px solid red;
+    background-color: $white;
+    overflow-y: scroll;
+}
+
+.footer {
+    position: fixed;
+    bottom: 192px;
+    width: $containerWidth;
 }
