@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import styles from './ProductCard.module.scss'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -22,12 +22,39 @@ const useStyles = makeStyles({
 
 const ProductCard = (props: product) => {
   const classes = useStyles()
-
   const { dispatch } = useContext(BasketContext)
   const [quantity, setQuantity] = useState(1)
 
   const handleAddToBasket = () => {
-    dispatch({ type: 'add', payload: props })
+    const payload = { ...props, quantity: quantity }
+    dispatch({ type: 'add', payload: payload })
+  }
+
+  const handleRemoveFromBasket = () => {
+    const payload = { ...props, quantity: quantity }
+    dispatch({ type: 'remove', payload: payload })
+  }
+
+  useEffect(() => {
+    if (quantity < 1) handleRemoveFromBasket()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantity])
+
+  const handleClick = (type: string) => {
+    switch (type) {
+      case 'increment':
+        setQuantity(quantity + 1)
+        break
+      case 'decrement':
+        if (quantity === 1) {
+          handleRemoveFromBasket()
+        } else {
+          setQuantity(quantity - 1)
+        }
+        break
+      default:
+        break
+    }
   }
 
   return (
@@ -56,15 +83,15 @@ const ProductCard = (props: product) => {
           </Button>
         ) : (
           <>
-            <Button size="small" color="primary" onClick={handleAddToBasket}>
+            <Button size="small" color="primary" onClick={handleRemoveFromBasket}>
               Remove from basket
             </Button>
             <div className={styles.edit}>
               <label htmlFor="quantity">Edit quantity: </label>
               <div className={styles.quantity}>
-                <QuantityButton type="increment" product={props} />
+                <QuantityButton type="increment" handleClick={() => handleClick('increment')} />
                 <p className={styles.quantityAmount}>{quantity}</p>
-                <QuantityButton type="decrement" product={props} />
+                <QuantityButton type="decrement" handleClick={() => handleClick('decrement')} />
               </div>
             </div>
           </>

@@ -5,4 +5,5 @@ export interface product {
   price: number
   img: string
   isBasket?: boolean // took a shortcut here :/
+  quantity?: number
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { PRODUCTS, BANNERS } from '../../API/links'
 import { product } from '../../types'
 import ProductCard from '../../components/ProductCard/ProductCard'
+import styles from './ShopScreen.module.scss'
 
 const ShopScreen = () => {
   const [products, setProducts] = useState<product[]>()
@@ -22,7 +23,8 @@ const ShopScreen = () => {
   }, [])
 
   return (
-    <div>
+    <div className={styles.container}>
+      {!products && <h5>Products loading...</h5>}
       <h4>{banner}</h4>
       <div>
         {products &&
@@ -33,6 +35,7 @@ const ShopScreen = () => {
               id={product.id}
               price={product.price}
               colour={product.colour}
+              key={index}
             />
           ))}
       </div>
