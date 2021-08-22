@@ -1,33 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './App.module.scss'
-import BottomNav from '../components/BottomNav'
-import { PRODUCTS } from './API/links'
 
-interface product {
-  id: number
-  colour: string
-  name: string
-  price: number
-  img: string
-}
+import BottomNavigation from '@material-ui/core/BottomNavigation'
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import HomeIcon from '@material-ui/icons/Home'
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket'
+import BasketScreen from '../screens/BasketScreen/BasketScreen'
+import ShopScreen from '../screens/ShopScreen/ShopScreen'
 
 function App() {
-  const [products, setProducts] = useState<product[]>()
-
-  useEffect(() => {
-    ;(async () => {
-      const res = await fetch(PRODUCTS)
-      const data = await res.json()
-      console.log(data)
-      setProducts(data)
-    })()
-  }, [])
+  // render 'Shop' or 'Basket' screen,
+  // would use React Router if app required, but
+  // for this small tech test this way is fine
+  const [screen, setScreen] = useState(0)
 
   return (
     <div className={styles.App}>
-      <div>{products && products.map((product, index) => <p key={index}>{product.name}</p>)}</div>
+      <div>{screen === 0 ? <ShopScreen /> : <BasketScreen />}</div>
       <footer className={styles.footer}>
-        <BottomNav />
+        <BottomNavigation value={screen} onChange={(e, index) => setScreen(index)} showLabels>
+          <BottomNavigationAction label="Shop" icon={<HomeIcon />} />
+          <BottomNavigationAction label="Basket" icon={<ShoppingBasketIcon />} />
+        </BottomNavigation>
       </footer>
     </div>
   )
