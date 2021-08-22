@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { PRODUCTS, BANNERS } from '../../API/links'
 import { product } from '../../types'
-import ProductCard from '../../components/ProductCard'
+import ProductCard from '../../components/ProductCard/ProductCard'
 
 const ShopScreen = () => {
   const [products, setProducts] = useState<product[]>()
