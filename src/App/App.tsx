@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className={styles.App}>
-      <div>{screen === 0 ? <ShopScreen /> : <BasketScreen />}</div>
+      <div className={styles.screen}>{screen === 0 ? <ShopScreen /> : <BasketScreen />}</div>
       <footer className={styles.footer}>
         <BottomNavigation value={screen} onChange={(e, index) => setScreen(index)} showLabels>
           <BottomNavigationAction label="Shop" icon={<HomeIcon />} />

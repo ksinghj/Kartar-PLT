@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom'
 import './index.scss'
 import App from './App/App'
 import reportWebVitals from './reportWebVitals'
+import BasketProvider from './state/BasketProvider'
+import { RecoilRoot } from 'recoil'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <BasketProvider>
+        <App />
+      </BasketProvider>
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 )
