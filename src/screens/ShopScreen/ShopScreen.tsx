@@ -1,20 +1,17 @@
 import { useState, useEffect } from 'react'
-import { PRODUCTS, BANNERS } from '../../API/links'
+import { useRecoilValue } from 'recoil'
+import { productsQuery } from '../../state/selectors'
+import { BANNERS } from '../../API/links'
 import { product } from '../../types'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import styles from './ShopScreen.module.scss'
 
 const ShopScreen = () => {
-  const [products, setProducts] = useState<product[]>()
+  const products = useRecoilValue(productsQuery)
   const [banner, setBanner] = useState<string>()
 
   // get the products data on mount, and store in state
   useEffect(() => {
-    ;(async () => {
-      const res = await fetch(PRODUCTS)
-      const data = await res.json()
-      setProducts(data)
-    })()
     ;(async () => {
       const res = await fetch(BANNERS)
       const data = await res.json()
@@ -25,10 +22,15 @@ const ShopScreen = () => {
   return (
     <div className={styles.container}>
       {!products && <h5>Products loading...</h5>}
-      <h4>{banner}</h4>
       <div>
+        {/* 
+        this does load slower than products as we fetch it every render, 
+        but serves as a demo of another way to get data 
+        (rather than use state management) vvv
+        */}
+        <h4>{banner}</h4>
         {products &&
-          products.map((product, index) => (
+          products.map((product: product, index: number) => (
             <ProductCard
               name={product.name}
               img={product.img}

@@ -8,7 +8,7 @@ const BasketScreen = () => {
   const { basketContents } = useContext(BasketContext)
 
   useEffect(() => {
-    window.scrollTo({ top: 0 })
+    window.scrollTo(0, 0)
   }, [])
 
   return (

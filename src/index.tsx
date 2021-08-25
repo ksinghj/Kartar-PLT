@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import './index.scss'
 import App from './App/App'
 import reportWebVitals from './reportWebVitals'
 import BasketProvider from './state/BasketProvider'
 import { RecoilRoot } from 'recoil'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 ReactDOM.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <BasketProvider>
-        <App />
-      </BasketProvider>
-    </RecoilRoot>
+    <Suspense fallback={<CircularProgress />}>
+      <RecoilRoot>
+        <BasketProvider>
+          <App />
+        </BasketProvider>
+      </RecoilRoot>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 )

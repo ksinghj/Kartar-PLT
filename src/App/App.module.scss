@@ -16,7 +16,6 @@
 }
 
 .footer {
-    position: sticky;
-    bottom: 0;
     width: $containerWidth;
+    z-index: 2;
 }
