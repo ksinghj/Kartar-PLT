@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import './index.scss'
 import App from './App/App'
 import reportWebVitals from './reportWebVitals'
-import BasketProvider from './state/BasketProvider'
 import { RecoilRoot } from 'recoil'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -11,9 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<CircularProgress />}>
       <RecoilRoot>
-        <BasketProvider>
-          <App />
-        </BasketProvider>
+        <App />
       </RecoilRoot>
     </Suspense>
   </React.StrictMode>,

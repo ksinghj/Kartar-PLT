@@ -1,11 +1,12 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
+import { useRecoilValue } from 'recoil'
+import { basketState } from '../../state/atoms'
 import ProductCard from '../../components/ProductCard/ProductCard'
-import { BasketContext } from '../../state/BasketProvider'
 import { product } from '../../types'
 import styles from './BasketScreen.module.scss'
 
 const BasketScreen = () => {
-  const { basketContents } = useContext(BasketContext)
+  const basketContents = useRecoilValue(basketState)
 
   useEffect(() => {
     window.scrollTo(0, 0)

@@ -24,9 +24,9 @@ const ShopScreen = () => {
       {!products && <h5>Products loading...</h5>}
       <div>
         {/* 
-        this does load slower than products as we fetch it every render, 
+        the banner does load slower than products as we fetch it every render, 
         but serves as a demo of another way to get data 
-        (rather than use state management) vvv
+        (rather than use state management like Recoil) vvv
         */}
         <h4>{banner}</h4>
         {products &&
@@ -38,6 +38,7 @@ const ShopScreen = () => {
               price={product.price}
               colour={product.colour}
               key={index}
+              quantity={1}
             />
           ))}
       </div>

@@ -1,4 +1,5 @@
 import { atom } from 'recoil'
+import { product } from '../types'
 
 export const productsState = atom({
   key: 'productsState',
@@ -7,5 +8,5 @@ export const productsState = atom({
 
 export const basketState = atom({
   key: 'basketState',
-  default: [],
+  default: [] as product[],
 })
