@@ -34,9 +34,9 @@ const ProductCard = (props: product) => {
   }
 
   const handleRemoveFromBasket = () => {
-    let newState = basketContents.filter(item => {
-      return item.id !== props.id
-    })
+    const newState = [...basketContents]
+    const indexToRemove = newState.findIndex(item => item.id === props.id)
+    newState.splice(indexToRemove, 1)
     setBasketContents(newState)
   }
 
