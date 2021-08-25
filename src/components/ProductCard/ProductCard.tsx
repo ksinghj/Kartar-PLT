@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import styles from './ProductCard.module.scss'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,45 +20,41 @@ const useStyles = makeStyles({
   },
 })
 
-// TODO: remove single instance from basket
-// TODO: edit individual quantities (state)
-
 const ProductCard = (props: product) => {
   const classes = useStyles()
-  const [quantity, setQuantity] = useState(1)
   const [basketContents, setBasketContents] = useRecoilState(basketState)
 
   const handleAddToBasket = () => {
-    setBasketContents([...basketContents, props])
-  }
-
-  const handleRemoveFromBasket = () => {
     const newState = [...basketContents]
-    const indexToRemove = newState.findIndex(item => item.id === props.id)
-    newState.splice(indexToRemove, 1)
-    setBasketContents(newState)
+    const itemFound = newState.findIndex(item => item.id === props.id)
+    // if item is already there, just replace with a clone, with 1 more quantity
+    // (can't just quantity++ as read-only)
+    if (itemFound !== -1) {
+      let clone = Object.assign({}, newState[itemFound])
+      clone.quantity++
+      newState[itemFound] = clone
+    }
+    itemFound !== -1 ? setBasketContents(newState) : setBasketContents([...basketContents, props])
   }
 
-  useEffect(() => {
-    if (quantity < 1) handleRemoveFromBasket()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quantity])
+  interface removeBasketOptions {
+    remove?: Boolean
+  }
 
-  const handleClick = (type: string) => {
-    switch (type) {
-      case 'increment':
-        setQuantity(quantity + 1)
-        break
-      case 'decrement':
-        if (quantity === 1) {
-          handleRemoveFromBasket()
-        } else {
-          setQuantity(quantity - 1)
-        }
-        break
-      default:
-        break
+  const handleRemoveFromBasket = (options?: removeBasketOptions) => {
+    const newState = [...basketContents]
+    const itemFound = newState.findIndex(item => item.id === props.id)
+    // if only 1 left, or remove option specified
+    if (newState[itemFound].quantity === 1 || (options && options.remove)) {
+      newState.splice(itemFound, 1)
+    } else {
+      // decrease quantity by replacing the object with a clone, but with a reduced quantity
+      // (can't just quantity-- as read-only)
+      let clone = Object.assign({}, newState[itemFound])
+      clone.quantity--
+      newState[itemFound] = clone
     }
+    setBasketContents(newState)
   }
 
   return (
@@ -88,15 +83,15 @@ const ProductCard = (props: product) => {
           </Button>
         ) : (
           <>
-            <Button size="small" color="primary" onClick={handleRemoveFromBasket}>
+            <Button size="small" color="primary" onClick={() => handleRemoveFromBasket({ remove: true })}>
               Remove from basket
             </Button>
             <div className={styles.edit}>
               <label htmlFor="quantity">Edit quantity: </label>
               <div className={styles.quantity}>
-                <QuantityButton type="increment" handleClick={() => handleClick('increment')} />
-                <p className={styles.quantityAmount}>{quantity}</p>
-                <QuantityButton type="decrement" handleClick={() => handleClick('decrement')} />
+                <QuantityButton type="increment" handleClick={handleAddToBasket} />
+                <p className={styles.quantityAmount}>{props.quantity}</p>
+                <QuantityButton type="decrement" handleClick={handleRemoveFromBasket} />
               </div>
             </div>
           </>
